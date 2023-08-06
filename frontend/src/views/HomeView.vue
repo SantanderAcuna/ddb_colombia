@@ -20,14 +20,46 @@
             <td colspan="6"><h6>Cargando...</h6></td>
           </tr>
 
-          <tr v-else  v-for="(est, i) in estudiantes" :key="est.id">
-            <td v-text="(i + 1)"></td>
+          <tr v-else v-for="(est, i) in estudiantes" :key="est.id">
+            <td v-text="i + 1"></td>
             <td v-text="est.id"></td>
-            <td><img :src="est.foto" alt="Foto"></td>
+            <td>
+              <img
+                v-if="est.foto"
+                style="width: 150px; !important"
+                :src="est.foto"
+                alt="Foto"
+                class="img-thumbnail"
+              />
+              <img
+                v-else height="30"
+                style="width: 90px;"
+               :src="require('@/assets/img/1.png')"
+                alt="Foto"
+                class="img-thumbnail"
+              />
+            </td>
             <td v-text="est.nombre"></td>
             <td v-text="est.apellido"></td>
             <td v-text="formatDate(est.created_at)"></td>
-            <td></td>
+            <td>
+              <router-link :to="{ path: 'view/' + est.id }" class="btn btn-info"
+                ><i class="fa-solid fa-eye"></i
+              ></router-link>
+
+              &nbsp;
+
+              <router-link
+                :to="{ path: 'edit/' + est.id }"
+                class="btn btn-warning"
+                ><i class="fa-solid fa-edit"></i
+              ></router-link>
+
+              &nbsp;
+              <button class="btn btn-danger">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </td>
           </tr>
         </tbody>
       </table>
@@ -53,7 +85,6 @@ export default {
       this.cargando = true;
 
       axios.get("http://127.0.0.1:8000/api/estudiantes").then((res) => {
-        
         this.estudiantes = res.data.data;
         this.cargando = false;
       });

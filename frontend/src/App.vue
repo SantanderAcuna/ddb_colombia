@@ -1,5 +1,5 @@
 <template>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+  <nav class="navbar navbar-expand-lg navbar navbar-expand-md navbar navbar-expand-sm navbar-dark bg-success">
     <div class="container-fluid">
       <a class="navbar-brand" href="#">Gestion academica</a>
       <button
