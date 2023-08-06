@@ -1,18 +1,67 @@
 <template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="container-md">
+    <div class="row">
+      <div class="col-lg-6 offset-lg-2"></div>
+
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th scope="col">#</th>
+            <th scope="col">ID</th>
+            <th scope="col">FOTO</th>
+            <th scope="col">NOMBRE</th>
+            <th scope="col">APELLIDO</th>
+            <th scope="col">REGISTRO</th>
+            <th scope="col">ACCIONES</th>
+          </tr>
+        </thead>
+        <tbody class="table-group-divider" id="contenido">
+          <tr v-if="cargando">
+            <td colspan="6"><h6>Cargando...</h6></td>
+          </tr>
+
+          <tr v-else  v-for="(est, i) in estudiantes" :key="est.id">
+            <td v-text="(i + 1)"></td>
+            <td v-text="est.id"></td>
+            <td><img :src="est.foto" alt="Foto"></td>
+            <td v-text="est.nombre"></td>
+            <td v-text="est.apellido"></td>
+            <td v-text="formatDate(est.created_at)"></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import HelloWorld from '@/components/HelloWorld.vue'
-
+import axios from "axios";
+import { getTransitionRawChildren } from "vue";
 export default {
-  name: 'HomeView',
-  components: {
-    HelloWorld
-  }
-}
+  data() {
+    return {
+      estudiantes: null,
+      cargando: false,
+    };
+  },
+  mounted() {
+    this.getestudiantes();
+  },
+  methods: {
+    getestudiantes() {
+      this.cargando = true;
+
+      axios.get("http://127.0.0.1:8000/api/estudiantes").then((res) => {
+        
+        this.estudiantes = res.data.data;
+        this.cargando = false;
+      });
+    },
+    formatDate(date) {
+      if (!date) return ""; // Manejar fechas nulas o indefinidas si es necesario
+      return new Date(date).toLocaleDateString();
+    },
+  },
+};
 </script>
