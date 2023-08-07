@@ -32,9 +32,10 @@
                 class="img-thumbnail"
               />
               <img
-                v-else height="30"
-                style="width: 90px;"
-               :src="require('@/assets/img/1.png')"
+                v-else
+                height="30"
+                style="width: 90px"
+                :src="require('@/assets/img/1.png')"
                 alt="Foto"
                 class="img-thumbnail"
               />
@@ -56,7 +57,11 @@
               ></router-link>
 
               &nbsp;
-              <button class="btn btn-danger">
+
+              <button
+                class="btn btn-danger"
+                v-on:click="($event) => eliminar(est.id, est.nombre)"
+              >
                 <i class="fa-solid fa-trash"></i>
               </button>
             </td>
@@ -69,6 +74,7 @@
 
 <script>
 import axios from "axios";
+import { confirmar } from "../funciones";
 import { getTransitionRawChildren } from "vue";
 export default {
   data() {
@@ -88,6 +94,15 @@ export default {
         this.estudiantes = res.data.data;
         this.cargando = false;
       });
+    },
+    eliminar(id, nombre) {
+      confirmar(
+        "http://127.0.0.1:8000/api/estudiantes/",
+        id,
+        "Eliminar registro",
+        "Realmente desea eliminar a" + nombre + "?"
+      );
+      this.cargando = false;
     },
     formatDate(date) {
       if (!date) return ""; // Manejar fechas nulas o indefinidas si es necesario
