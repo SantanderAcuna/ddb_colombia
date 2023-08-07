@@ -68,9 +68,9 @@ export async function enviarSolicitud(metodo, parametros, url, mensaje) {
         const res = await axios({ method: metodo, url: url, data: parametros });
 
         // Si el estado de la respuesta es exitoso (código 200)
-        if (res.status === 200) {
+        if (res.status === 200 || res.status < 300) {
             // Muestra una alerta de éxito con el mensaje proporcionado
-            mostrarAlerta(mensaje, 'success');
+           console.log( mostrarAlerta(mensaje, 'success'))
             
             // Redirige a la página principal después de 1 segundo
             setTimeout(() => {
@@ -78,7 +78,7 @@ export async function enviarSolicitud(metodo, parametros, url, mensaje) {
             }, 1000);
         } else {
             // Muestra una alerta de error si la respuesta no es exitosa
-            mostrarAlerta('No se pudo eliminar el registro', 'error');
+           console.log( mostrarAlerta('No se pudo eliminar el registro', 'error'))
         }
     } catch (error) {
         // Muestra una alerta de error si ocurre algún error en la solicitud HTTP
